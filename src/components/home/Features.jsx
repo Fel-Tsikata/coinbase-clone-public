@@ -1,4 +1,4 @@
-import phoneImage from "../../assets/phone.avif";
+import phoneImage from "../../assets/Phone.avif";
 import phoneImage2 from "../../assets/zero-fees.avif";
 import phoneImage3 from "../../assets/CB.avif";
 import Feature from "./Feature";
