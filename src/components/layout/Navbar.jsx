@@ -1,5 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import coinbase from "../../assets/coinbase-logo.svg";
+import searchIcon from "../../assets/search.svg";
+import globeIcon from "../../assets/globe.jpg";
+import individualsImg from "../../assets/individuals.png";
+import institutionsImg from "../../assets/institutions.png";
+import businessesImg from "../../assets/businesses.png";
+import developersImg from "../../assets/developers.jpg";
+import companyImg from "../../assets/company.png";  
 import {
   Menu,
   X,
@@ -45,7 +53,7 @@ const Navbar = () => {
       <div className="flex items-center justify-between w-full max-w-[1280px] mx-auto px-4 md:px-6 lg:px-12 h-full relative">
         <div className="flex items-center h-full">
           <Link to="/" className="ml-6 mr-6 lg:mr-6">
-            <img src="/src/assets/coinbase-logo.svg" alt="Coinbase" className="h-8" />
+            <img src={coinbase} alt="Coinbase" className="h-8" />
           </Link>
 
           {/* Desktop Links */}
@@ -76,10 +84,10 @@ const Navbar = () => {
         {/* Desktop Actions */}
         <div className="hidden lg:flex items-center gap-4 mr-8">
           <button className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
-            <img src="/src/assets/search.svg" alt="search" className="w-6 h-6" />
+            <img src ={searchIcon} alt="search" className="w-6 h-6" />
           </button>
           <button className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors">
-            <img src="/src/assets/globe.jpg" alt="globe" className="w-6 h-6 rounded-full" />
+            <img src={globeIcon} alt="globe" className="w-6 h-6 rounded-full" />
           </button>
           <Link
             to="/signin"
@@ -158,11 +166,7 @@ const Navbar = () => {
                 {activeMenu === "Individuals" && (
                   <div className="flex gap-4 items-start">
                     <div className="flex-shrink-0">
-                      <img
-                        src="/src/assets/individuals.png"
-                        alt="Individuals"
-                        className="w-32 h-40 object-contain rounded-xl"
-                      />
+                      <img src={individualsImg} alt="Individuals" className="w-32 h-40 object-contain rounded-xl" />
                     </div>
                     <div className="flex-1">
                       <span className="text-[12px] font-bold uppercase tracking-widest text-[#5B616E] mb-2 block">
@@ -183,11 +187,7 @@ const Navbar = () => {
                 {activeMenu === "Institutions" && (
                   <div className="flex gap-4 items-start">
                     <div className="flex-shrink-0">
-                      <img
-                        src="/src/assets/institutions.png"
-                        alt="Institutions"
-                        className="w-32 h-40 object-contain rounded-xl"
-                      />
+                      <img src ={institutionsImg} alt="Institutions" className="w-32 h-40 object-contain rounded-xl" />
                     </div>
                     <div className="flex-1">
                       <span className="text-[12px] font-bold uppercase tracking-widest text-[#5B616E] mb-2 block">
@@ -209,7 +209,7 @@ const Navbar = () => {
                   <div className="flex gap-4 items-start">
                     <div className="flex-shrink-0">
                       <img
-                        src="/src/assets/businesses.png"
+                        src={businessesImg}
                         alt="Businesses"
                         className="w-32 h-40 object-contain rounded-xl"
                       />
@@ -234,7 +234,7 @@ const Navbar = () => {
                   <div className="flex gap-4 items-start">
                     <div className="flex-shrink-0">
                       <img
-                        src="/src/assets/developers.jpg"
+                        src={developersImg}
                         alt="Developers"
                         className="w-32 h-40 object-contain rounded-xl"
                       />
@@ -259,7 +259,7 @@ const Navbar = () => {
                   <div className="flex gap-4 items-start">
                     <div className="flex-shrink-0">
                       <img
-                        src="/src/assets/company.png"
+                        src={companyImg}
                         alt="Company"
                         className="w-32 h-40 object-contain rounded-xl"
                       />
