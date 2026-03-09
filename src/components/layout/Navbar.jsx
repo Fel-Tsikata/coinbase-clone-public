@@ -44,7 +44,7 @@ const Navbar = () => {
     >
       <div className="flex items-center justify-between w-full max-w-[1280px] mx-auto px-4 md:px-6 lg:px-12 h-full relative">
         <div className="flex items-center h-full">
-          <Link to="/" className="ml-6 mr-6 lg:mr-10">
+          <Link to="/" className="ml-6 mr-6 lg:mr-6">
             <img src="/src/assets/coinbase-logo.svg" alt="Coinbase" className="h-8" />
           </Link>
 
@@ -83,13 +83,13 @@ const Navbar = () => {
           </button>
           <Link
             to="/signin"
-            className="text-lg font-bold text-[#0A0B0D] hover:text-[#0052FF] transition-colors"
+            className="text-lg w-20 font-bold text-[#0A0B0D] hover:text-[#0052FF] transition-colors"
           >
             Sign in
           </Link>
           <Link
             to="/signup"
-            className="bg-[#0052FF] hover:bg-[#0045D8] text-white rounded-[1.75rem] px-6 py-3 font-bold transition-colors text-lg leading-tight"
+            className="bg-[#0052FF] w-30 hover:bg-[#0045D8] text-white rounded-[1.75rem] px-6 py-3 font-bold transition-colors text-lg leading-tight"
           >
             Sign up
           </Link>
