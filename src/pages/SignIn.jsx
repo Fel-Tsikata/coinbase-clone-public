@@ -1,12 +1,47 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "@/assets/login.svg";
 import googleIcon from "@/assets/google.svg";
 import appleIcon from "@/assets/apple.svg";
+import { authApi } from "@/lib/api";
 
 function SignIn() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const isDisabled = email.trim() === "";
+  const isDisabled = email.trim() === "" || password.trim() === "" || loading;
+
+  const handleLogin = async () => {
+    if (isDisabled) return;
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const result = await authApi.login({
+        email: email.trim(),
+        password,
+      });
+
+      const token = result?.data?.token;
+      const user = result?.data?.user;
+
+      if (!token) {
+        throw new Error("Login succeeded but token was not returned.");
+      }
+
+      localStorage.setItem("authToken", token);
+      localStorage.setItem("authUser", JSON.stringify(user || {}));
+      navigate("/");
+    } catch (err) {
+      setError(err.message || "Unable to sign in.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-black text-white relative flex items-center justify-center">
@@ -23,6 +58,10 @@ function SignIn() {
           Sign in to Coinbase
         </h1>
 
+        <p className="text-sm text-red-500 text-center mb-6">
+          Demo app – do not use your real password
+        </p>
+
         {/* Email */}
         <label className="text-sm mb-2 block">Email</label>
 
@@ -34,8 +73,21 @@ function SignIn() {
           className="w-full bg-black border border-gray-700 rounded-lg p-3 mb-6 focus:outline-none focus:border-blue-500"
         />
 
+        <label className="text-sm mb-2 block">Password</label>
+
+        <input
+          type="password"
+          placeholder="Your password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full bg-black border border-gray-700 rounded-lg p-3 mb-4 focus:outline-none focus:border-blue-500"
+        />
+
+        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+
         {/* Continue Button */}
         <button
+          onClick={handleLogin}
           disabled={isDisabled}
           className={`w-full py-4 rounded-full font-medium transition mb-6
           ${
@@ -44,7 +96,7 @@ function SignIn() {
               : "bg-blue-600 hover:bg-blue-500"
           }`}
         >
-          Continue
+          {loading ? "Signing in..." : "Continue"}
         </button>
 
         {/* Divider */}
@@ -104,7 +156,9 @@ function SignIn() {
         {/* Signup */}
         <p className="text-center text-lg font-semibold mb-6">
           Don't have an account?{" "}
-          <span className="text-blue-500 cursor-pointer">Sign up</span>
+          <Link to="/signup" className="text-blue-500 cursor-pointer">
+            Sign up
+          </Link>
         </p>
 
         {/* Privacy */}
@@ -114,9 +168,9 @@ function SignIn() {
         </p>
 
         {/* Cancel */}
-        <p className="text-center font-semibold text-blue-500 cursor-pointer">
+        <Link to="/" className="block text-center font-semibold text-blue-500 cursor-pointer">
           Cancel signing in
-        </p>
+        </Link>
 
       </div>
     </div>

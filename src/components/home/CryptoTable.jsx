@@ -1,19 +1,37 @@
-function CryptoTable({ cryptoData }) {
+function CryptoTable({ cryptoData, activeTab, onTabChange, loading, error }) {
+  const tabClass = (tab) =>
+    activeTab === tab
+      ? "bg-gray-700 px-3 md:px-4 py-2 rounded-full"
+      : "text-gray-400 hover:text-gray-200 cursor-pointer";
+
   return (
     <div className="bg-black text-white w-full max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl rounded-3xl p-4 md:p-6 lg:p-10 mx-auto">
 
       {/* Tabs */}
       <div className="flex flex-wrap gap-2 md:gap-6 text-xs md:text-sm mb-4 md:mb-6">
-        <span className="bg-gray-700 px-3 md:px-4 py-2 rounded-full">Tradable</span>
-        <span className="text-gray-400">Top gainers</span>
-        <span className="text-gray-400">New on Coinbase</span>
+        <button onClick={() => onTabChange("all")} className={tabClass("all")}>
+          Tradable
+        </button>
+        <button onClick={() => onTabChange("gainers")} className={tabClass("gainers")}>
+          Top gainers
+        </button>
+        <button onClick={() => onTabChange("new")} className={tabClass("new")}>
+          New on Coinbase
+        </button>
       </div>
 
       {/* Coins */}
       <div className="space-y-4 md:space-y-8">
-        {cryptoData.map((crypto, index) => (
-          <CryptoRow key={index} crypto={crypto} />
-        ))}
+        {loading && <p className="text-gray-400 text-sm">Loading assets...</p>}
+
+        {!loading && error && <p className="text-red-400 text-sm">{error}</p>}
+
+        {!loading && !error && cryptoData.length === 0 && (
+          <p className="text-gray-400 text-sm">No assets found.</p>
+        )}
+
+        {!loading && !error &&
+          cryptoData.map((crypto) => <CryptoRow key={crypto.id} crypto={crypto} />)}
       </div>
 
     </div>

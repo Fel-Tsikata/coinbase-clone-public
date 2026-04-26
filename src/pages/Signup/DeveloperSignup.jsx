@@ -1,11 +1,48 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "@/assets/login.svg";
+import { authApi } from "@/lib/api";
 
 function DeveloperSignup() {
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const isDisabled = email.trim() === "";
+  const isDisabled =
+    name.trim() === "" || email.trim() === "" || password.trim() === "" || loading;
+
+  const handleRegister = async () => {
+    if (isDisabled) return;
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const result = await authApi.register({
+        name: name.trim(),
+        email: email.trim(),
+        password,
+      });
+
+      const token = result?.data?.token;
+      const user = result?.data?.user;
+
+      if (!token) {
+        throw new Error("Registration succeeded but token was not returned.");
+      }
+
+      localStorage.setItem("authToken", token);
+      localStorage.setItem("authUser", JSON.stringify(user || {}));
+      navigate("/");
+    } catch (err) {
+      setError(err.message || "Unable to create account.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-black text-white relative flex items-center justify-center">
@@ -24,9 +61,24 @@ function DeveloperSignup() {
           Create your account
         </h1>
 
+        <p className="text-sm text-red-500 mb-4">
+          Demo app – do not use your real password
+        </p>
+
         <p className="text-gray-400 mb-6">
           Access all that Coinbase has to offer with a single account.
         </p>
+
+        {/* Name */}
+        <label className="text-sm mb-2 block">Name</label>
+
+        <input
+          type="text"
+          placeholder="Your full name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="w-full bg-black border border-gray-700 rounded-lg p-3 mb-4 focus:outline-none focus:border-blue-500"
+        />
 
         {/* Email */}
         <label className="text-sm mb-2 block">Email</label>
@@ -36,11 +88,24 @@ function DeveloperSignup() {
           placeholder="Your email address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full bg-black border border-gray-700 rounded-lg p-3 mb-6 focus:outline-none focus:border-blue-500"
+          className="w-full bg-black border border-gray-700 rounded-lg p-3 mb-4 focus:outline-none focus:border-blue-500"
         />
+
+        <label className="text-sm mb-2 block">Password</label>
+
+        <input
+          type="password"
+          placeholder="Create a password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full bg-black border border-gray-700 rounded-lg p-3 mb-4 focus:outline-none focus:border-blue-500"
+        />
+
+        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
 
         {/* Continue Button */}
         <button
+          onClick={handleRegister}
           disabled={isDisabled}
           className={`w-full py-4 rounded-full font-medium transition
             ${
@@ -49,7 +114,7 @@ function DeveloperSignup() {
                 : "bg-blue-600 hover:bg-blue-500"
             }`}
         >
-          Continue
+          {loading ? "Creating account..." : "Continue"}
         </button>
 
         {/* Divider */}

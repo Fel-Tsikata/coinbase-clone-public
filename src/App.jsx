@@ -10,6 +10,10 @@ import SignIn from "./pages/SignIn";
 import Learn from "./pages/Learn";
 import AssetDetail from "./pages/AssetDetail";
 import Explore from "./pages/Explore";
+import Profile from "./pages/Profile";
+import { WarningBanner } from "./components/layout/WarningBanner.jsx";
+import FooterDisclaimer from "./components/layout/FooterDisclaimer";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 function AppContent() {
   const location = useLocation();
@@ -17,6 +21,7 @@ function AppContent() {
 
   return (
     <>
+      <WarningBanner />
       {!hideNavbarRoutes.includes(location.pathname) && <Navbar />}
 
       <Routes>
@@ -29,7 +34,16 @@ function AppContent() {
         <Route path="/signup/business" element={<BusinessSignup />} />
         <Route path="/signup/developer" element={<DeveloperSignup />} />
         <Route path="/signin" element={<SignIn />} />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
+       <FooterDisclaimer />
     </>
   );
 }
