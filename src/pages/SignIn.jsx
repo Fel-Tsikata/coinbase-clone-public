@@ -14,7 +14,11 @@ function SignIn() {
 
   const isDisabled = email.trim() === "" || password.trim() === "" || loading;
 
-  const handleLogin = async () => {
+  const handleLogin = async (event) => {
+    if (event) {
+      event.preventDefault();
+    }
+
     if (isDisabled) return;
 
     setLoading(true);
@@ -35,7 +39,7 @@ function SignIn() {
 
       localStorage.setItem("authToken", token);
       localStorage.setItem("authUser", JSON.stringify(user || {}));
-      navigate("/");
+      navigate("/", { replace: true });
     } catch (err) {
       setError(err.message || "Unable to sign in.");
     } finally {
@@ -51,7 +55,7 @@ function SignIn() {
         <img src={logo} alt="logo" className="h-8" />
       </div>
 
-      <div className="w-full max-w-md px-6">
+      <form className="w-full max-w-md px-6" onSubmit={handleLogin}>
 
         {/* Title */}
         <h1 className="text-2xl font-semibold mb-6 text-center">
@@ -87,7 +91,7 @@ function SignIn() {
 
         {/* Continue Button */}
         <button
-          onClick={handleLogin}
+          type="submit"
           disabled={isDisabled}
           className={`w-full py-4 rounded-full font-medium transition mb-6
           ${
@@ -172,7 +176,7 @@ function SignIn() {
           Cancel signing in
         </Link>
 
-      </div>
+      </form>
     </div>
   );
 }
