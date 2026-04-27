@@ -1,8 +1,6 @@
-const BACKEND_URL =
-  import.meta.env.VITE_API_BASE_URL ||
-  "https://interim-assesment-fel-tsikata.onrender.com";
+const BACKEND_URL = "https://interim-assesment-fel-tsikata.onrender.com";
 
-const API_BASE_URL = import.meta.env.DEV ? "/api" : BACKEND_URL;
+const API_BASE_URL = "/api";
 
 async function apiRequest(path, options = {}) {
   const { method = "GET", body, token } = options;
